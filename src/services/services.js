@@ -1,24 +1,57 @@
 const axios = require('axios');
+const config = require('../utils/config');
+require('dotenv').config();
 
-// Replace with the actual API key and endpoint
-const API_URL = 'https://api.api-ninjas.com/v1/cocktail';
-const API_KEY = 'nJpFxmc48ILJGb1lF+OSFg==YRfvDbcbxyB3QNMY';
-
-async function fetchCocktailData(name) {
+const fetchWithApiKey = async (apiKey, name) => {
   try {
-    const response = await axios.get(API_URL, {
+    const response = await axios.get(config.apiUrl, {
       headers: {
-        'X-Api-Key': API_KEY
+        'X-Api-Key': apiKey
       },
-      params: {
-        name: name
-      }
+      params: { name }
     });
     return response.data;
   } catch (error) {
-    console.error('Error fetching data from cocktail API:', error);
+    const errorMessage = error.response?.data?.error || 'An unexpected error occurred';
+    console.error(`Error fetching data with API key ${apiKey}: ${errorMessage}`);
+    return null;
+  }
+};
+
+const fetchCocktailData = async (name) => {
+  const apiKeys = [config.apiKeyFirst, config.apiKeySecond, config.apiKeyDefault];
+  let data = null;
+
+  for (const key of apiKeys) {
+    data = await fetchWithApiKey(key, name);
+    if (data) {
+      return data;
+    }
+  }
+
+  throw new Error('Failed to fetch cocktail data with all API keys.');
+};
+
+const fetchOpenAiData = async (prompt) => {
+  try {
+    const response = await axios.post(
+      config.openAiApiUrl,
+      {
+        model: 'text-davinci-003',
+        prompt,
+        max_tokens: 150
+      },
+      {
+        headers: {
+          'Authorization': `Bearer ${config.openAiApiKey}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching data from OpenAI:', error);
     throw error;
   }
-}
-
-module.exports = { fetchCocktailData };
+};
+module.exports = { fetchCocktailData, fetchOpenAiData };
