@@ -1,5 +1,5 @@
-const express = require('express');
-const { getCocktails} = require('../controllers/controllers');
+import express from 'express';
+import { getCocktails, getOpenAiData } from '../controllers/controllers.js';
 
 const router = express.Router();
 
@@ -11,4 +11,7 @@ router.get('/', (req, res) => {
 // Route for '/api'
 router.get('/api', getCocktails);
 
-module.exports = router;
+// Route for '/ai'
+router.get('/ai', getOpenAiData);
+
+export default router;

@@ -1,6 +1,8 @@
-const axios = require('axios');
-const config = require('../utils/config');
-require('dotenv').config();
+import axios from 'axios';
+import config from '../utils/config.js';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const fetchWithApiKey = async (apiKey, name) => {
   try {
@@ -32,8 +34,26 @@ const fetchCocktailData = async (name) => {
   throw new Error('Failed to fetch cocktail data with all API keys.');
 };
 
-const fetchOpenAiData = async (prompt) => {
+const fetchOpenAiData = async () => {
   try {
+    const prompt = `
+      Generate a response about a Negroni cocktail that includes:
+      - An image of a Negroni cocktail.
+      - A brief description of its flavor profile.
+      - A recipe that uses ounces (oz) measurements, with a rich syrup proportion set such that if citrus content is 1 oz, the rich syrup should be 0.35 oz.
+      Output format:
+      {
+        "image": "URL of the Negroni image",
+        "description": "Brief flavor profile of the Negroni",
+        "recipe": [
+          { "ingredient": "Gin", "amount": "1 oz" },
+          { "ingredient": "Campari", "amount": "1 oz" },
+          { "ingredient": "Sweet Vermouth", "amount": "1 oz" },
+          { "ingredient": "Rich Syrup", "amount": "calculated based on citrus if included" }
+        ]
+      }
+    `;
+
     const response = await axios.post(
       config.openAiApiUrl,
       {
@@ -48,10 +68,12 @@ const fetchOpenAiData = async (prompt) => {
         }
       }
     );
+    
     return response.data;
   } catch (error) {
-    console.error('Error fetching data from OpenAI:', error);
+    console.error(`Error fetching data from OpenAI:`, error);
     throw error;
   }
 };
-module.exports = { fetchCocktailData, fetchOpenAiData };
+
+export { fetchCocktailData, fetchOpenAiData };

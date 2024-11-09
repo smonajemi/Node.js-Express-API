@@ -1,4 +1,5 @@
-require('dotenv').config();
+import dotenv from 'dotenv';
+dotenv.config();
 
 const config = {
   openAiApiKey: process.env.OPENAI_API_KEY,
@@ -9,4 +10,4 @@ const config = {
   apiKeyDefault: process.env.API_KEY_DEFAULT
 };
 
-module.exports = config;
+export default config;
