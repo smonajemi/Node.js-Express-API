@@ -1,5 +1,6 @@
 import express from 'express';
-import { getCocktails, getOpenAiData } from '../controllers/controllers.js';
+import { createUserController } from '../controllers/controllers.js';
+import { authMiddleware } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
 
@@ -8,10 +9,8 @@ router.get('/', (req, res) => {
     res.send("backend is working");
 });
 
-// Route for '/api'
-router.get('/api', getCocktails);
+router.post('/users', authMiddleware, createUserController);
 
-// Route for '/ai'
-router.get('/ai', getOpenAiData);
+
 
 export default router;
