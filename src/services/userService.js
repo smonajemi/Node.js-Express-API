@@ -1,4 +1,4 @@
-import knex from '../config/db';
+import knex from '../config/db.js';
 
 export const createUser = async (userData) => {
   const [user] = await knex('users').insert(userData).returning('*');
