@@ -25,27 +25,6 @@ This is a Node.js backend project built with Express.js and PostgreSQL, deployed
 ├── app.js          # Main application entry point
 ```
 
-## Installation
-
-1. Clone the repository:
-   ```sh
-   git clone <repository-url>
-   cd <project-folder>
-   ```
-2. Install dependencies:
-   ```sh
-   npm install
-   ```
-3. Configure the database:
-   - Set up a PostgreSQL database.
-   - Configure the database connection in `config/db.js`.
-   - Run migrations using Knex:
-     ```sh
-     npx knex migrate:latest
-     ```
-
-## Usage
-
 ### Running the Server
 
 To start the server, run:
@@ -55,45 +34,6 @@ npm start
 ```
 
 The server will run on `http://localhost:3000` (or your configured port).
-
-## REST API Endpoints
-
-### Create a User
-
-- **Endpoint:** `POST /users`
-- **Request Body:**
-  ```json
-  {
-    "name": "John Doe",
-    "email": "johndoe@example.com"
-  }
-  ```
-- **Response:**
-  ```json
-  {
-    "id": "123",
-    "name": "John Doe",
-    "email": "johndoe@example.com"
-  }
-  ```
-
-### Get a User
-
-- **Endpoint:** `GET /users/:id`
-- **Response:**
-  ```json
-  {
-    "id": "123",
-    "name": "John Doe",
-    "email": "johndoe@example.com"
-  }
-  ```
-- **Error Response:**
-  ```json
-  {
-    "message": "User not found"
-  }
-  ```
 
 ## Project Structure Details
 
@@ -116,5 +56,6 @@ Routes define the API endpoints and connect them to the controllers.
 - PostgreSQL
 - Knex.js
 - AWS
+
 
 
